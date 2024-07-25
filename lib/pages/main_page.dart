@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/theme/theme.dart';
+import 'package:zc_dodiddone/screens/profile.dart'; // Import profile_page
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -14,7 +15,8 @@ class _MainPageState extends State<MainPage> {
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Задачи'),
     Text('Сегодня'),
-    Text('Профиль'),
+    // Заменяем Text на ProfilePage
+    ProfilePage(), 
     Text('Выполнено'),
   ];
 
@@ -83,5 +85,6 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
 
 
