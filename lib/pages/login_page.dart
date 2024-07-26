@@ -37,15 +37,55 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                _isRegistration ? 'Регистрация' : 'Вход',
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              // Move the logo and text up by 100px
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png', // Замените на правильный путь к файлу
+                    height: 40, // Устанавливаем высоту изображения
+                  ),
+                  const SizedBox(width: 8),
+                  // Добавляем текст "zerocoder"
+                  Text(
+                    'zerocoder',
+                    style: TextStyle(
+                      fontSize: 55,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white, // Белый цвет текста
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 50), // Add space between logo and text
+              // RichText for the app name
+              RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'Do',
+                      style: TextStyle(
+                        color: DoDidDoneTheme.lightTheme.colorScheme.primary,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Did',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    TextSpan(
+                      text: 'Done',
+                      style: TextStyle(
+                        color: DoDidDoneTheme.lightTheme.colorScheme.secondary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 30), // Double the space between text and input fields
               TextField(
                 decoration: InputDecoration(
                   hintText: 'Почта',
@@ -92,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: () {
                   // Handle login or registration logic here
-                Navigator.pushReplacement(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const MainPage()));
