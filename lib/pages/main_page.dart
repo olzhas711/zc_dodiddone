@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zc_dodiddone/screens/all_tasks.dart';
 import 'package:zc_dodiddone/theme/theme.dart';
 import 'package:zc_dodiddone/screens/profile.dart'; // Import profile_page
+import 'package:intl/intl.dart'; // Import intl for date formatting
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -12,13 +13,14 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
+  DateTime? _selectedDeadline; // Variable to store the selected deadline
 
   static const List<Widget> _widgetOptions = <Widget>[
     TaskPage(),
     Text('Задачи'),
     Text('Сегодня'),
     // Заменяем Text на ProfilePage
-    ProfilePage(), 
+    ProfilePage(),
     Text('Выполнено'),
   ];
 
@@ -26,6 +28,99 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  // Функция для показа диалогового окна
+  void _showAddTaskDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Добавить задачу'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Название задачи',
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Описание',
+                ),
+              ),
+              const SizedBox(height: 16),
+              // Виджет выбора даты и времени
+              ElevatedButton(
+                onPressed: () {
+                  // Show the date and time picker
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  ).then((pickedDate) {
+                    if (pickedDate != null) {
+                      // Show the time picker after selecting the date
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                      ).then((pickedTime) {
+                        if (pickedTime != null) {
+                          setState(() {
+                            _selectedDeadline = DateTime(
+                              pickedDate.year,
+                              pickedDate.month,
+                              pickedDate.day,
+                              pickedTime.hour,
+                              pickedTime.minute,
+                            );
+                          });
+                        }
+                      });
+                    }
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF4CEB8B), // Green color for the button
+                ),
+                child: Row(
+                  children: [
+                    const Text('Дедлайн: '), // Add "Дедлайн: " text
+                    const SizedBox(width: 8), // Add spacing
+                    Text(
+                      _selectedDeadline != null
+                          ? DateFormat('dd.MM.yyyy HH:mm').format(_selectedDeadline!)
+                          : '', // Empty string if no deadline is selected
+                      style: const TextStyle(color: Colors.white), // Set text color to white
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Отмена'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Обработка добавления задачи
+                // Например, можно добавить задачу в список задач
+                print('Задача добавлена!');
+                Navigator.of(context).pop();
+              },
+              child: const Text('Добавить'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -84,9 +179,10 @@ class _MainPageState extends State<MainPage> {
         unselectedItemColor: DoDidDoneTheme.lightTheme.colorScheme.secondary,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddTaskDialog,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
-
-
-

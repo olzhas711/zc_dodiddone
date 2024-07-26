@@ -21,7 +21,7 @@ class TaskItem extends StatelessWidget {
         children: [
           // Gradient for the title
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
             decoration: BoxDecoration(
               gradient: getGradientForDeadline(deadline),
               borderRadius: const BorderRadius.only(
@@ -43,14 +43,14 @@ class TaskItem extends StatelessWidget {
                 ),
                 // Row with buttons
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8), // Reduced vertical padding
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end, // Align buttons to the end
                     children: [
                       IconButton(
                         onPressed: () {
                           // Handle Edit button press
-                          print('Edit button pressed');
+                          print('Edit button press');
                         },
                         icon: const Icon(Icons.edit),
                       ),
